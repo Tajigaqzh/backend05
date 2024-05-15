@@ -1,0 +1,15 @@
+{
+  "server_id": "vid-w6tkk90",
+  "service_id": "l7h1oi30",
+  "action": "on_play",
+  "client_id": "2lrg8u01",
+  "ip": "172.17.0.1",
+  "vhost": "__defaultVhost__",
+  "app": "live",
+  "stream": "game-5c556a999e6e4a5f87672035a4708883",
+  "tcUrl": "rtmp://__defaultVhost__/live",
+  "param": "?roomId=game-5c556a999e6e4a5f87672035a4708883&token=1ccb65c1-bd57-45c8-90fb-067b07661764",
+  "pageUrl": "http://localhost:5173/",
+  "stream_url": "/live/game-5c556a999e6e4a5f87672035a4708883",
+  "stream_id": "vid-79q221t"
+}

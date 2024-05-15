@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bilibackend.mapper.WatcherMapper">
+
+    <resultMap id="baseResultMap" type="com.bilibackend.entity.Watcher">
+        <id property="id" jdbcType="BIGINT" column="id"/>
+        <result property="stream" jdbcType="VARCHAR" column="stream"/>
+        <result property="userId" jdbcType="BIGINT" column="userId"/>
+        <result property="service_id" jdbcType="VARCHAR" column="service_id"/>
+        <result property="enterTime" jdbcType="TIMESTAMP" column="enterTime"/>
+        <result property="ip" jdbcType="VARCHAR" column="ip"/>
+        <result property="client_id" jdbcType="VARCHAR" column="client_id"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        id
+        ,stream,userId,
+        service_id,enterTime,ip,
+            client_id
+    </sql>
+
+
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bilibackend.mapper.UserMapper">
+
+    <resultMap id="baseResultMap" type="com.bilibackend.entity.User">
+        <id property="id" jdbcType="BIGINT" column="uid"/>
+        <result property="username" jdbcType="VARCHAR" column="uusername"/>
+        <result property="password" jdbcType="VARCHAR" column="upassword"/>
+        <result property="nickname" jdbcType="VARCHAR" column="unickname"/>
+        <result property="avatar" jdbcType="VARCHAR" column="uavatar"/>
+        <result property="level" jdbcType="BIGINT" column="ulevel"/>
+        <result property="deleteStatus" jdbcType="BIT" column="udeleteStatus"/>
+        <result property="mobile" jdbcType="VARCHAR" column="umobile"/>
+        <result property="sex" jdbcType="BIT" column="usex"/>
+        <collection property="roles" ofType="com.bilibackend.entity.Role">
+            <id property="id" column="rid" jdbcType="BIGINT"/>
+            <result property="deleteStatus" jdbcType="BIT" column="rdeleteStatus"/>
+            <result property="roleName" jdbcType="VARCHAR" column="rroleName"/>
+            <result property="roleTag" jdbcType="VARCHAR" column="rroleTag"/>
+        </collection>
+
+    </resultMap>
+
+    <select id="getUserInfo" resultMap="baseResultMap" parameterType="long">
+        select u.id           as uid,
+               u.username     as uusername,
+               u.level        as ulevel,
+               u.deleteStatus as udeleteStatus,
+               u.nickname     as unickname,
+               u.password     as upassword,
+               u.sex          as usex,
+               u.mobile       as umobile,
+               u.avatar       as uavatar,
+               r.id           as rid,
+               r.roleName     as rroleName,
+               r.deleteStatus as rdeleteStatus,
+               r.roleTag      as rroleTag
+        from bili_sys_user u
+                 left join bili_sys_user_role ur on u.id = ur.user_id
+                 left join bili_sys_role r on ur.role_id = r.id
+        where u.id = #{queryId}
+          and u.deleteStatus = 1
+          and r.deleteStatus = 1
+    </select>
+
+</mapper>

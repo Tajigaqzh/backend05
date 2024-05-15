@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bilibackend.mapper.HistoryMapper">
+
+    <resultMap id="BaseResultMap" type="com.bilibackend.entity.History">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="recordTime" column="recordTime" jdbcType="TIMESTAMP"/>
+            <result property="uid" column="uid" jdbcType="BIGINT"/>
+            <result property="watched" column="watched" jdbcType="BIGINT"/>
+            <result property="videoType" column="videoType" jdbcType="VARCHAR"/>
+            <result property="url" column="url" jdbcType="VARCHAR"/>
+            <result property="coverUrl" column="coverUrl" jdbcType="VARCHAR"/>
+            <result property="authorAvatar" column="authorAvatar" jdbcType="VARCHAR"/>
+            <result property="authorName" column="authorName" jdbcType="VARCHAR"/>
+            <result property="authorLink" column="authorLink" jdbcType="VARCHAR"/>
+            <result property="isMobile" column="isMobile" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,title,recordTime,
+        uid,watched,videoType,
+        url,coverUrl,authorAvatar,
+        authorName,authorLink,isMobile
+    </sql>
+</mapper>

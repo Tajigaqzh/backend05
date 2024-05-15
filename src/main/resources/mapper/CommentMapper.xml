@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bilibackend.mapper.CommentMapper">
+
+    <resultMap id="BaseResultMap" type="com.bilibackend.entity.Comment">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="isTop" column="isTop" jdbcType="INTEGER"/>
+            <result property="videoId" column="videoId" jdbcType="BIGINT"/>
+            <result property="content" column="content" jdbcType="VARCHAR"/>
+            <result property="publishName" column="publishName" jdbcType="VARCHAR"/>
+            <result property="avatarImg" column="avatarImg" jdbcType="VARCHAR"/>
+            <result property="avatarLink" column="avatarLink" jdbcType="VARCHAR"/>
+            <result property="publishLevel" column="publishLevel" jdbcType="INTEGER"/>
+            <result property="publishTime" column="publishTime" jdbcType="TIMESTAMP"/>
+            <result property="parentId" column="parentId" jdbcType="BIGINT"/>
+            <result property="ipAddress" column="ipAddress" jdbcType="VARCHAR"/>
+            <result property="ipRegion" column="ipRegion" jdbcType="VARCHAR"/>
+            <result property="agreeNumber" column="agreeNumber" jdbcType="BIGINT"/>
+            <result property="disagreeNumber" column="disagreeNumber" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,isTop,videoId,
+        content,publishName,avatarImg,
+        avatarLink,publishLevel,publishTime,
+        parentId,ipAddress,ipRegion,
+        agreeNumber,disagreeNumber
+    </sql>
+</mapper>

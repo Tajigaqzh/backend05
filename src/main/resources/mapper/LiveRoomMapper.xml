@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bilibackend.mapper.LiveRoomMapper">
+
+    <resultMap id="BaseResultMap" type="com.bilibackend.entity.LiveRoom">
+        <id property="roomId" column="roomId" jdbcType="VARCHAR"/>
+        <result property="startId" column="startId" jdbcType="BIGINT"/>
+        <result property="deleteStatus" column="deleteStatus" jdbcType="BIT"/>
+        <result property="roomTitle" column="roomTitle" jdbcType="VARCHAR"/>
+        <result property="roomDesc" column="roomDesc" jdbcType="VARCHAR"/>
+        <result property="notice" column="notice" jdbcType="VARCHAR"/>
+        <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+        <result property="endTime" column="endTime" jdbcType="TIMESTAMP"/>
+        <result property="playUrl" column="playUrl" jdbcType="VARCHAR"/>
+        <result property="typeTitle" column="typeTitle" jdbcType="VARCHAR"/>
+        <result property="roomCover" column="roomCover" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        roomId
+        ,startId,deleteStatus,
+        roomTitle,roomDesc,notice,
+        createTime,endTime,playUrl,typeTitle,roomCover
+    </sql>
+</mapper>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bilibackend.mapper.VideoMapper">
+
+    <resultMap id="RecommendResultMap" type="com.bilibackend.entity.Video">
+        <id property="id" column="vid" jdbcType="BIGINT"/>
+        <result property="title" column="vtitle" jdbcType="VARCHAR"/>
+        <result property="deleteStatus" column="vdeleteStatus" jdbcType="BIT"/>
+        <result property="url" column="vurl" jdbcType="VARCHAR"/>
+        <result property="createTime" column="vcreateTime" jdbcType="TIMESTAMP"/>
+        <result property="groupId" column="vgroupId" jdbcType="BIGINT"/>
+        <result property="typeName" column="vtypeName" jdbcType="VARCHAR"/>
+        <result property="cover" column="vcover" jdbcType="VARCHAR"/>
+
+        <collection property="publisher" ofType="com.bilibackend.entity.User">
+            <id column="uid" property="id" jdbcType="BIGINT"/>
+            <result column="uusername" jdbcType="VARCHAR" property="username"/>
+            <result column="unickname" property="nickname" jdbcType="VARCHAR"/>
+            <result column="uavatar" jdbcType="VARCHAR" property="avatar"/>
+            <result column="ulevel" jdbcType="VARCHAR" property="level"/>
+        </collection>
+
+        <!--        playTimes" column="playTimes" jdbcType="BIGINT"/>-->
+        <!--        keyWord" column="keyWord" jdbcType="VARCHAR"/>-->
+        <!--        transmit" column="transmit" jdbcType="BIGINT"/>-->
+        <!--        description" column="description" jdbcType="VARCHAR"/>-->
+        <!--        length" column="length" jdbcType="BIGINT"/>-->
+    </resultMap>
+
+
+    <resultMap id="DetailResultMap" type="com.bilibackend.entity.Video">
+        <id property="id" column="vid" jdbcType="BIGINT"/>
+        <result property="title" column="vtitle" jdbcType="VARCHAR"/>
+        <result property="deleteStatus" column="vdeleteStatus" jdbcType="BIT"/>
+        <result property="url" column="vurl" jdbcType="VARCHAR"/>
+        <result property="createTime" column="vcreateTime" jdbcType="TIMESTAMP"/>
+        <result property="playTimes" column="vplayTimes" jdbcType="BIGINT"/>
+        <result property="groupId" column="vgroupId" jdbcType="BIGINT"/>
+        <result property="keyWord" column="vkeyWord" jdbcType="VARCHAR"/>
+        <result property="typeName" column="vtypeName" jdbcType="VARCHAR"/>
+        <result property="transmit" column="vtransmit" jdbcType="BIGINT"/>
+        <result property="description" column="vdescription" jdbcType="VARCHAR"/>
+
+        <result property="cover" column="vcover" jdbcType="VARCHAR"/>
+        <result property="length" column="vlength" jdbcType="BIGINT"/>
+        <result property="likeNumber" column="vlikeNumber" jdbcType="BIGINT"/>
+        <result property="coin" column="vcoin" jdbcType="BIGINT"/>
+        <result property="collect" column="vcollect" jdbcType="BIGINT"/>
+        <collection property="publisher" ofType="com.bilibackend.entity.User">
+            <id column="uid" property="id" jdbcType="BIGINT"/>
+            <result column="uusername" jdbcType="VARCHAR" property="username"/>
+            <result column="unickname" property="nickname" jdbcType="VARCHAR"/>
+            <result column="uavatar" jdbcType="VARCHAR" property="avatar"/>
+            <result column="ulevel" jdbcType="VARCHAR" property="level"/>
+        </collection>
+        <collection property="comment" column="comment" ofType="com.bilibackend.entity.Comment">
+            <id property="id" column="cid" jdbcType="BIGINT"/>
+            <result property="isTop" column="cisTop" jdbcType="INTEGER"/>
+            <result property="videoId" column="cvideoId" jdbcType="BIGINT"/>
+            <result property="content" column="ccontent" jdbcType="VARCHAR"/>
+            <result property="publishName" column="cpublishName" jdbcType="VARCHAR"/>
+            <result property="avatarImg" column="cavatarImg" jdbcType="VARCHAR"/>
+            <result property="avatarLink" column="cavatarLink" jdbcType="VARCHAR"/>
+            <result property="publishLevel" column="cpublishLevel" jdbcType="INTEGER"/>
+            <result property="publishTime" column="cpublishTime" jdbcType="TIMESTAMP"/>
+            <result property="parentId" column="cparentId" jdbcType="BIGINT"/>
+            <result property="ipAddress" column="cipAddress" jdbcType="VARCHAR"/>
+            <result property="ipRegion" column="cipRegion" jdbcType="VARCHAR"/>
+            <result property="agreeNumber" column="cagreeNumber" jdbcType="BIGINT"/>
+            <result property="disagreeNumber" column="cdisagreeNumber" jdbcType="BIGINT"/>
+        </collection>
+    </resultMap>
+
+
+    <select id="listPage" resultMap="RecommendResultMap">
+        select v.id as vid,
+        v.title as vtitle,
+        v.deleteStatus as vdeleteStatus,
+        v.createTime as vcreateTime,
+        v.url as vurl,
+        v.groupId as vgroupId,
+        v.typeName as vtypeName,
+        v.cover as vcover,
+        u.id as uid,
+        u.username as uuername,
+        u.nickname as unickname,
+        u.avatar as uavatar,
+        u.level as ulevel
+
+        from bili_video v
+        left join video_publish vp on v.id = vp.videoId
+        left join bili_sys_user u on vp.publisherId = u.id;
+        <if test="ew.customSqlSegment !=null and ew.customSqlSegment !=''">
+            ${ew.customSqlSegment}
+        </if>
+    </select>
+
+
+    <select id="getDetail" resultMap="DetailResultMap">
+        select v.id             as vid,
+               v.title          as vtitle,
+               v.deleteStatus   as vdeleteStatus,
+               v.url            as vurl,
+               v.createTime     as vcreateTime,
+               v.playTimes      as vplayTimes,
+               v.groupId        as vgroupId,
+               v.keyWord        as vkeyWord,
+               v.typeName       as vtypeName,
+               v.transmit       as vtransmit,
+               v.description    as vdescription,
+               v.coin           as vcoin,
+               v.collect        as vcollect,
+               v.likeNumber     as vlikeNumber,
+               v.cover          as vcover,
+               v.length         as vlength,
+
+               u.id             as uid,
+               u.username       as uuername,
+               u.nickname       as unickname,
+               u.avatar         as uavatar,
+               u.level          as ulevel,
+
+
+               c.id             as cid,
+               c.isTop          as cisTop,
+               c.videoId        as cvideoId,
+               c.content        as ccontent,
+               c.publishName    as cpublishName,
+               c.avatarImg      as cavatarImg,
+               c.avatarLink     as cavatarLink,
+               c.publishLevel   as cpublishLevel,
+               c.publishTime    as cpublishTime,
+               c.parentId       as cparentId,
+               c.ipAddress      as cipAddress,
+               c.ipRegion       as cipRegion,
+               c.agreeNumber    as cagreeNumber,
+               c.disagreeNumber as cdisagreeNumber
+
+        from bili_video v
+                 left join bili_comment c on v.id = c.videoId
+                 left join video_publish vp on v.id = vp.videoId = v.id
+                 left join bili_sys_user u on vp.publisherId = u.id
+        where v.id = #{videoId}
+    </select>
+</mapper>
