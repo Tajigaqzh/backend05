@@ -50,7 +50,7 @@ public class RecommendTask {
     /**
      *
      */
-    @Scheduled(cron = "0 14 9,12,15,18,21 * * ?")
+    @Scheduled(cron = "0 0 9,12,15,18,21 * * ?")
     public void updateRecommendTask() {
         //一周之前，以及15天之前到现在播放超过3000的
         long lastWeek = DateUtil.lastWeek().getTime();
