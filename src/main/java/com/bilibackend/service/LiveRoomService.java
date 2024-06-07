@@ -2,6 +2,7 @@ package com.bilibackend.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.bilibackend.entity.LiveRoom;
+import com.bilibackend.vo.RoomDetail;
 
 /**
 * @author 20126
@@ -9,5 +10,7 @@ import com.bilibackend.entity.LiveRoom;
 * @createDate 2024-05-12 11:24:04
 */
 public interface LiveRoomService extends IService<LiveRoom> {
+
+    RoomDetail getDetailById(String id);
 
 }

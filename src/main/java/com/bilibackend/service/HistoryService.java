@@ -1,7 +1,10 @@
 package com.bilibackend.service;
 
-import com.bilibackend.entity.History;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.bilibackend.entity.History;
+import com.bilibackend.vo.PageResultVo;
+
+import java.util.List;
 
 /**
 * @author 20126
@@ -9,5 +12,16 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2024-05-16 01:49:03
 */
 public interface HistoryService extends IService<History> {
+
+    PageResultVo historyPage(Long page, Long size,Long uid);
+
+
+    List<History> searchCondition(History history);
+
+
+    boolean addHistory(History history);
+
+
+    boolean updateHistory(History history);
 
 }

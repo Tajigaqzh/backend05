@@ -4,6 +4,10 @@ import cn.dev33.satoken.exception.NotLoginException;
 import com.bilibackend.utils.Result;
 import com.bilibackend.utils.ResultCode;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -28,6 +32,25 @@ public class GlobalExceptionHandler {
     public String handleDeleteException(DeleteException exception) {
         log.warn(exception.getMessage());
         return Result.errorJSON(ResultCode.DELETE_ERROR);
+    }
+
+    @ExceptionHandler({HttpMessageNotReadableException.class, MethodArgumentNotValidException.class})
+    public String handlerHttpMessageNotReadableException(Exception exception) {
+        System.out.println(exception);
+        return Result.errorJSON(ResultCode.PARAM_ERROR);
+    }
+
+
+    @ExceptionHandler({MissingServletRequestParameterException.class})
+    public String handlerMissingServletRequestParameterException(MissingServletRequestParameterException exception) {
+
+        System.out.println(exception);
+        return Result.errorJSON(ResultCode.PARAM_ERROR,"参数缺失");
+    }
+
+    @ExceptionHandler({HttpRequestMethodNotSupportedException.class})
+    public String handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException exception) {
+        return Result.errorJSON(ResultCode.UN_SUPPORT_METHOD,"方法不支持");
     }
 
     @ExceptionHandler({NotLoginException.class})

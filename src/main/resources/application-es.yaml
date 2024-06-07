@@ -1,0 +1,8 @@
+spring:
+  elasticsearch:
+    uris:
+#      -
+    # 超时时间默认1s，网络不好的话，
+    connection-timeout: 5s
+#    username: elastic
+#    password: elastic

@@ -11,7 +11,7 @@
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring-boot.version>3.0.2</spring-boot.version>
+        <spring-boot.version>3.1.2</spring-boot.version>
     </properties>
 
     <parent>
@@ -24,6 +24,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+        </dependency>
+
 
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -117,6 +124,11 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
@@ -167,7 +179,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
 <!--                    C:\Users\20126\Desktop\backend\2405\backend05\src\main\java\com\bilibackend\Backend05Application.java-->
-                    <mainClass>com.bilibackend.Backend05Application</mainClass>
+                    <mainClass>com.bilibackend.Backend06Application</mainClass>
                 </configuration>
             </plugin>
             <!-- 配置跳过测试 -->

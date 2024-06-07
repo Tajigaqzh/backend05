@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.File;
 import java.io.InputStream;
 
 /**
@@ -18,7 +19,7 @@ import java.io.InputStream;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UploadParam {
-    private InputStream inputStream;
+    private File file;
     private Long size;
     private String key;
     private String uploadId;

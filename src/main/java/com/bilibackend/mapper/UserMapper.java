@@ -5,6 +5,8 @@ import com.bilibackend.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * @Author 20126
  * @Description
@@ -15,5 +17,9 @@ import org.apache.ibatis.annotations.Param;
 public interface UserMapper extends BaseMapper<User> {
 
     User getUserInfo(@Param("queryId") Long queryId);
+
+    List<User> getFollowMe(@Param("upId") Long upId);
+
+    List<User> getMyFollow(@Param("userId") Long userId);
 
 }

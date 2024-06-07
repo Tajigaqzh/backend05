@@ -1,8 +1,12 @@
 package com.bilibackend.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.bilibackend.entity.LiveRoom;
+import com.bilibackend.vo.RoomDetail;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
 * @author 20126
@@ -12,6 +16,10 @@ import org.apache.ibatis.annotations.Mapper;
 */
 @Mapper
 public interface LiveRoomMapper extends BaseMapper<LiveRoom> {
+
+
+//        IPage<History> listPage(Page<History> page, @Param(Constants.WRAPPER) Wrapper<History> ew);
+    RoomDetail getRoomDetailByRoomId(@Param(Constants.WRAPPER) Wrapper<RoomDetail> ew);
 
 }
 

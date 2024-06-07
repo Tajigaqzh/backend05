@@ -2,6 +2,7 @@ package com.bilibackend.service;
 
 import com.bilibackend.dto.StartRtcDto;
 import com.bilibackend.dto.StopDto;
+import com.bilibackend.entity.LiveRoom;
 import com.bilibackend.vo.Client;
 import com.bilibackend.vo.LiveRoomVO;
 import com.bilibackend.vo.Stream;
@@ -55,6 +56,10 @@ public interface SrsService {
      */
     Map<String, Object> getRecommendRoom(String typeName, Long page, Long size);
 
+
+
+    List<LiveRoom> getSomeRoom();
+
     /**
      * 查看正在观看直播的人数
      * @param roomId
@@ -69,4 +74,7 @@ public interface SrsService {
      * @param userId
      */
     void leaveRoom(String roomId, String userId);
+
+
+
 }

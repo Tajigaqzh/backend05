@@ -1,11 +1,11 @@
 srs:
   # 直播服务器，带域名版和不带域名版
   server: https://live.nwyzx.com
-  serverHost: http://150.158.122.237
+  serverHost:
 
 
   # 发起直播的秘钥
-  publishSecret: 078725fe5e1b436e95a14fae8ec518cf
+  publishSecret:
   # 发起直播的接口
   publishUri: /rtc/v1/whip/?app=live
 
@@ -14,7 +14,7 @@ srs:
   srsLogin: /terraform/v1/mgmt/login
 
   # srs登录的密码
-  loginPassword: ae2567ec3eb00882
+  loginPassword:
   # 下面这两个需要token
   # 查询视频流的接口
   streamsUri: /api/v1/streams
@@ -23,4 +23,4 @@ srs:
 
 
   # 播放的url前缀
-  playPrefix: https://live.nwyzx.com/live/
+  playPrefix:

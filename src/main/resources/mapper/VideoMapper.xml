@@ -91,7 +91,7 @@
 
         from bili_video v
         left join video_publish vp on v.id = vp.videoId
-        left join bili_sys_user u on vp.publisherId = u.id;
+        left join bili_sys_user u on vp.publisherId = u.id
         <if test="ew.customSqlSegment !=null and ew.customSqlSegment !=''">
             ${ew.customSqlSegment}
         </if>

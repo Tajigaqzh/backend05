@@ -126,7 +126,7 @@ public class SrsCallback {
             }
 
         }
-        return Result.result(ResultCode.ERROR_CALLBACK, "ok");
+        return Result.result(ResultCode.ERROR_CALLBACK, "error");
     }
 
 

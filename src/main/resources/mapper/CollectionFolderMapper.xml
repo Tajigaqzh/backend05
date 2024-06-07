@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bilibackend.mapper.CollectionFolderMapper">
+
+    <resultMap id="BaseResultMap" type="com.bilibackend.entity.CollectionFolder">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="userId" column="userId" jdbcType="BIGINT"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+    </resultMap>
+
+<!--    <sql id="Base_Column_List">-->
+<!--        id-->
+<!--        ,name,userId,-->
+<!--        description-->
+<!--    </sql>-->
+    <resultMap id="Get_Result_Map" type="com.bilibackend.vo.CollectionVo">
+        <id property="id" column="vid" jdbcType="BIGINT"/>
+        <result property="title" column="vtitle" jdbcType="VARCHAR"/>
+        <result property="deleteStatus" column="vdeleteStatus" jdbcType="BIT"/>
+        <result property="createTime" column="vcreateTime" jdbcType="TIMESTAMP"/>
+        <result property="url" column="vurl" jdbcType="VARCHAR"/>
+        <result property="groupId" column="vgroupId" jdbcType="VARCHAR"/>
+        <result property="typeName" column="vtypeName" jdbcType="VARCHAR"/>
+        <result property="cover" column="vcover" jdbcType="VARCHAR"/>
+        <result property="coin" column="vcoin" jdbcType="BIGINT"/>
+        <result property="likeNumber" column="vlikeNumber" jdbcType="BIGINT"/>
+        <result property="collect" column="vcollect" jdbcType="BIGINT"/>
+        <result property="playTimes" column="vplayTimes" jdbcType="BIGINT"/>
+        <result property="transmit" column="vtransmit" jdbcType="BIGINT"/>
+        <result property="upId" column="uid" jdbcType="BIGINT"/>
+        <result property="username" column="uusername" jdbcType="VARCHAR"/>
+        <result property="nickname" column="unickname" jdbcType="VARCHAR"/>
+        <result property="avatar" column="uavatar" jdbcType="VARCHAR"/>
+        <result property="collectTime" column="ccollectTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="getVide0ByFolderId" resultMap="Get_Result_Map">
+
+        select v.id           as vid,
+               v.title        as vtitle,
+               v.deleteStatus as vdeleteStatus,
+               v.createTime   as vcreateTime,
+               v.url          as vurl,
+               v.groupId      as vgroupId,
+               v.typeName     as vtypeName,
+               v.cover        as vcover,
+
+               v.coin         as vcoin,
+               v.likeNumber   as vlikeNumber,
+               v.collect      as vcollect,
+               v.playTimes    as vplayTimes,
+               v.transmit     as vtransmit,
+
+               u.id           as uid,
+               u.username     as uusername,
+               u.nickname     as unickname,
+               u.avatar       as uavatar,
+               u.level        as ulevel,
+               c.collectTime  as ccollectTime
+
+        from bili_video v
+                 left join video_publish vp on v.id = vp.videoId
+                 left join bili_sys_user u on vp.publisherId = u.id
+                 left join bili_collection c on v.id = c.videoId
+        where v.id in (select videoId from bili_collection where bili_collection.folderId = #{folderId})
+    </select>
+</mapper>

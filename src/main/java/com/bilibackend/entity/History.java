@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.bilibackend.validate.UpdateGroup;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,7 +32,7 @@ public class History implements Serializable {
     /**
      * 历史记录id
      */
-    @TableId(type = IdType.AUTO)
+    @TableId(type = IdType.AUTO,value = "id")
     private Long id;
 
     /**
@@ -50,44 +52,59 @@ public class History implements Serializable {
     /**
      * 用户id，要加索引
      */
+    @TableField("uid")
     private Long uid;
 
     /**
      * 已看完的时长，秒数，完成后记录为一个固定值，比如-1
      */
+    @TableField("watched")
     private Long watched;
 
     /**
      * 视频类型
      */
+    @TableField("videoType")
     private String videoType;
     /**
      * 视频url
      */
+
+    @TableField("videoId")
+    private Long videoId;
+
+    //todo 加@tableField注释
+
+    @TableField("url")
     private String url;
 
     /**
      * 封面url
      */
+    @TableField("coverUrl")
     private String coverUrl;
 
     /**
      * 发布者头像
      */
+    @TableField("authorAvatar")
     private String authorAvatar;
 
     /**
      * 发布者姓名
      */
+    @TableField("authorName")
     private String authorName;
 
     /**
      * 发布者主页
      */
+    @TableField("authorLink")
     private String authorLink;
 
     /**
      * 是否是手机端
      */
+    @TableField("isMobile")
     private String isMobile;
 }

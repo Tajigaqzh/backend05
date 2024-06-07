@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -22,10 +21,15 @@ import java.util.List;
 public class VideoDto {
     @NotNull
     private String title;
+
+//    @NotNull
+//    private List<Long> ids;
+
     @NotNull
-    private List<Long> ids;
+    private List<AuthorDto> authors;
 
     private Long groupId;
+
     @NotNull
     private String keyWord;
     @NotNull
@@ -39,4 +43,7 @@ public class VideoDto {
     private Long length;
     @NotNull
     private String url;
+
+
+
 }

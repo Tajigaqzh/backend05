@@ -10,7 +10,10 @@ import com.bilibackend.validate.UpdateGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import java.io.Serializable;
@@ -27,6 +30,9 @@ import java.util.List;
 @Data
 @TableName(value = "bili_sys_user", autoResultMap = true)
 @Schema(description = "用户")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class User implements Serializable {
 
     /**
@@ -72,6 +78,9 @@ public class User implements Serializable {
     @Length(min = 10, max = 50)
     @TableField(value = "password")
     private String password;
+
+    @TableField("coin")
+    private Long coin;
 
     /**
      * 性别：0、女 1、男

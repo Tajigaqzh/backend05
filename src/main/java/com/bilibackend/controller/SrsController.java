@@ -3,11 +3,14 @@ package com.bilibackend.controller;
 import cn.hutool.core.util.ObjectUtil;
 import com.bilibackend.dto.StartRtcDto;
 import com.bilibackend.dto.StopDto;
+import com.bilibackend.entity.LiveRoom;
+import com.bilibackend.service.LiveRoomService;
 import com.bilibackend.service.SrsService;
 import com.bilibackend.utils.Result;
 import com.bilibackend.utils.ResultCode;
 import com.bilibackend.vo.Client;
 import com.bilibackend.vo.LiveRoomVO;
+import com.bilibackend.vo.RoomDetail;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +39,10 @@ public class SrsController {
 
     @Autowired
     private SrsService srsService;
+
+
+    @Autowired
+    private LiveRoomService liveRoomService;
 
 
     /**
@@ -67,6 +74,12 @@ public class SrsController {
         return Result.success(recommendRoom);
     }
 
+
+    @GetMapping("/random")
+    public Result getRecommendRandom() {
+        List<LiveRoom> someRoom = srsService.getSomeRoom();
+        return Result.success(someRoom);
+    }
 
     /**
      * 查询正在观看直播的人数
@@ -130,5 +143,14 @@ public class SrsController {
         return Result.success(clients);
     }
 
+
+    @GetMapping("/detail")
+    public Result getById(String roomId) {
+        RoomDetail detailById = liveRoomService.getDetailById(roomId);
+        if (ObjectUtil.isNotNull(detailById)) {
+            return Result.success(detailById);
+        }
+        return Result.error(ResultCode.QUERY_ERROR);
+    }
 
 }

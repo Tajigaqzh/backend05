@@ -13,7 +13,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.xml.stream.events.Comment;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -158,4 +157,7 @@ public class Video implements Serializable {
      */
     @TableField(exist = false)
     private Long watching;
+
+    @TableField(exist = false)
+    private String authors;
 }

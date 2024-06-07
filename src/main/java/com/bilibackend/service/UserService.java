@@ -1,6 +1,7 @@
 package com.bilibackend.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.bilibackend.dto.CoinDto;
 import com.bilibackend.entity.User;
 
 /**
@@ -15,4 +16,6 @@ public interface UserService extends IService<User> {
     User loginByMobile(String mobile, String password);
 
     User getUserInfo(Long uid);
+
+    boolean putCoin(CoinDto coinDto);
 }

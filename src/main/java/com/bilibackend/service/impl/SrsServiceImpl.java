@@ -1,9 +1,12 @@
 package com.bilibackend.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bilibackend.config.SrsConfig;
 import com.bilibackend.dto.StartRtcDto;
 import com.bilibackend.dto.StopDto;
@@ -134,9 +137,7 @@ public class SrsServiceImpl implements SrsService {
         while (!isEnd) {
             //重试三次
             String token = retryToken(mapToken);
-            System.out.println(token);
             String url = srsConfig.getFullStreamsURL() + "?token=" + token + "&start=" + page + "&count=" + count;
-            System.out.println(url);
             try {
                 ResponseEntity<StreamResultVO> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null, StreamResultVO.class);
                 if (responseEntity.getStatusCode().is2xxSuccessful() && responseEntity.getBody() != null) {
@@ -179,13 +180,27 @@ public class SrsServiceImpl implements SrsService {
      */
     @Override
     public boolean stopPublish(StopDto stopDto) {
+        //
         String type = stopDto.getRoomId().split("-")[0];
         LiveRoom stream = (LiveRoom) redisTemplate.opsForHash().get("live:" + type, stopDto.getRoomId());
         if (ObjectUtil.isNull(stream)) {
             return false;
         }
 
+        Long startId = stream.getStartId();
+
+
+        Object loginIdDefaultNull = StpUtil.getLoginIdDefaultNull();// 获取当前会话账号id, 如果未登录，则返回null
+
+        String s = loginIdDefaultNull.toString();
+        long id = Long.parseLong(s);
+
+        if (!Objects.equals(startId, id)) {
+            return false;
+        }
+
         String roomId = stream.getRoomId();
+
         Stream streamByRoomId = getStreamByRoomId(roomId);
 
         String mapToken = this.tokenMep.get("token");
@@ -274,33 +289,36 @@ public class SrsServiceImpl implements SrsService {
         String roomId1 = startRtcDto.getRoomId();
         String roomId;
         String playUrl;
+
         if (roomId1 != null && roomId1.length() > 0) {
-            roomId = roomId1;
+            roomId = startRtcDto.getTypeTitle() + "-" + roomId1;
             playUrl = srsConfig.getPlayPrefix() + roomId;
 
         } else {
             roomId = startRtcDto.getTypeTitle() + "-" + IdUtil.simpleUUID();
             playUrl = srsConfig.getPlayPrefix() + roomId;
-
-            LiveRoom liveRoom = LiveRoom.builder()
-                    .startId(startRtcDto.getStartId())
-                    .roomId(roomId)
-                    .roomDesc(startRtcDto.getRoomDesc())
-                    .roomTitle(startRtcDto.getRoomTitle())
-                    .deleteStatus(1)
-                    .roomCover(startRtcDto.getRoomCover())
-                    .notice(startRtcDto.getNotice())
-                    .typeTitle(startRtcDto.getTypeTitle())
-                    .createTime(new Date())
-                    //这个url只是简单的拼接一下，还要传递token和参数
-                    .playUrl(playUrl).build();
-
-            liveRoomService.save(liveRoom);
-//            String date = LocalDate.now().toString(); date + ":" +
-            redisTemplate.opsForHash().put("live:" + startRtcDto.getTypeTitle(), roomId, liveRoom);
         }
 
-        //发起人id，房间uuid，房间标题，房间简介，房间关键字，公告，sdp，弹幕？，此时还要创建一个room群私聊
+        LiveRoom liveRoom = LiveRoom.builder()
+                .startId(startRtcDto.getStartId())
+                .roomId(roomId)
+                .roomDesc(startRtcDto.getRoomDesc())
+                .roomTitle(startRtcDto.getRoomTitle())
+                .deleteStatus(1)
+                .roomCover(startRtcDto.getRoomCover())
+                .notice(startRtcDto.getNotice())
+                .typeTitle(startRtcDto.getTypeTitle())
+                .createTime(new Date())
+                //这个url只是简单的拼接一下，还要传递token和参数
+                .playUrl(playUrl).build();
+
+        liveRoomService.save(liveRoom);
+
+        redisTemplate.opsForHash().put("live:" + startRtcDto.getTypeTitle(), roomId, liveRoom);
+
+        //设置推荐的过期时间，避免意外结束直播，没有删除
+        redisTemplate.expire("live:" + startRtcDto.getTypeTitle(), 6, TimeUnit.HOURS);
+
         String fullPublishURL = srsConfig.getFullPublishURL(roomId);
 
         HttpHeaders headers = new HttpHeaders();
@@ -314,8 +332,6 @@ public class SrsServiceImpl implements SrsService {
             //数据库保存记录
             if (statusCode.is2xxSuccessful()) {
                 String sdp = response.getBody();
-
-//                System.out.println();
                 return LiveRoomVO.builder().roomId(roomId).sdp(sdp).playUrl(playUrl).build();
             } else {
                 return null;
@@ -413,6 +429,14 @@ public class SrsServiceImpl implements SrsService {
         return hashMap;
     }
 
+    @Override
+    public List<LiveRoom> getSomeRoom() {
+        QueryWrapper<LiveRoom> liveRoomQueryWrapper = new QueryWrapper<>();
+        liveRoomQueryWrapper.isNull("endTime");
+
+        return liveRoomService.list(new Page<>(0, 5), liveRoomQueryWrapper);
+    }
+
     /**
      * 查询正在观看直播的人数
      *
@@ -444,7 +468,6 @@ public class SrsServiceImpl implements SrsService {
     @Override
     public void leaveRoom(String roomId, String userId) {
         RLock lock = redissonClient.getLock(liveCountLockPrefix + roomId);
-
 
         QueryWrapper<Watcher> watcherQueryWrapper = new QueryWrapper<>();
         watcherQueryWrapper.eq("userId", userId).eq("stream", roomId);

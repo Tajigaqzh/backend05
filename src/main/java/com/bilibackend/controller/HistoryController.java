@@ -1,12 +1,18 @@
 package com.bilibackend.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bilibackend.entity.History;
 import com.bilibackend.service.HistoryService;
 import com.bilibackend.utils.Result;
 import com.bilibackend.utils.ResultCode;
+import com.bilibackend.vo.PageResultVo;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @Author 20126
@@ -22,10 +28,9 @@ public class HistoryController {
 
     @PostMapping("/add")
     public Result addHistory(@RequestBody @Validated History history) {
-        boolean save = historyService.save(history);
-        if (save) {
-            return Result.ok();
-        }
+        boolean save = historyService.addHistory(history);
+        //更新视频的播放量
+        if (save) return Result.ok();
         return Result.error(ResultCode.INSERT_ERROR);
     }
 
@@ -39,23 +44,42 @@ public class HistoryController {
      */
     @GetMapping("/page")
     public Result queryPage(@RequestParam("page") Long page,
-                            @RequestParam("size") Long size,
+                            @Valid @RequestParam("size") @Max(100) Long size,
                             @RequestParam("uid") Long uid
     ) {
-        return null;
+        PageResultVo pageResultVo = historyService.historyPage(page, size, uid);
+        return Result.success(pageResultVo);
     }
 
+    /**
+     * 根据标题，up主，时间搜索
+     *
+     * @param history
+     * @return
+     */
     @PostMapping("/search")
     public Result search(@RequestBody @Validated History history) {
-
-        return null;
+        List<History> histories = historyService.searchCondition(history);
+        return Result.success(histories);
     }
 
 
     //todo 新增视频的时候，添加到redus中时也加一个50毫秒延迟
     @PostMapping("/update")
     public Result updateHistory(@RequestBody @Validated History history) {
-//        history.
-        return null;
+
+        boolean update = historyService.updateHistory(history);
+
+        if (update) {
+            return Result.success();
+        }
+        return Result.error(ResultCode.UPDATE_ERROR);
+    }
+
+    @PostMapping("/delete")
+    public Result delete(@RequestBody List<Long> ids) {
+        boolean b = historyService.removeBatchByIds(ids);
+        if (b) return Result.success();
+        return Result.error(ResultCode.DELETE_ERROR);
     }
 }

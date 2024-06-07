@@ -23,8 +23,8 @@ public class SaTokenConfig implements WebMvcConfigurer {
      */
     private final String[] anonymous = {
             "/user/login",
-            "/user/demo",
             "/user/register",
+            "/video/type",
             //审核视频图片反馈
             "/tencent/callback/ban",
             //srs回调
@@ -35,9 +35,8 @@ public class SaTokenConfig implements WebMvcConfigurer {
             "/srs/streams",
             "/srs/stop",
             "/video/pageSimple",
-            "/video/demo"
-
-//            "/srs/publish",
+            "/video/pageType",
+            "danmu/get"
     };
 
     // 注册拦截器

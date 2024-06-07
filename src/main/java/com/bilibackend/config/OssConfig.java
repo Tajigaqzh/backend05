@@ -37,6 +37,18 @@ public class OssConfig {
     @Value("${oss.region}")
     private String region;
 
+    public String getRegion() {
+        return this.region;
+    }
+
+    public String getSecretKey() {
+        return this.secretKey;
+    }
+
+    public String getSecretId() {
+        return this.secretId;
+    }
+
 
     public String getBucketName() {
         return bucketName;

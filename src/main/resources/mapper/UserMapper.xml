@@ -6,13 +6,14 @@
     <resultMap id="baseResultMap" type="com.bilibackend.entity.User">
         <id property="id" jdbcType="BIGINT" column="uid"/>
         <result property="username" jdbcType="VARCHAR" column="uusername"/>
-        <result property="password" jdbcType="VARCHAR" column="upassword"/>
         <result property="nickname" jdbcType="VARCHAR" column="unickname"/>
         <result property="avatar" jdbcType="VARCHAR" column="uavatar"/>
         <result property="level" jdbcType="BIGINT" column="ulevel"/>
         <result property="deleteStatus" jdbcType="BIT" column="udeleteStatus"/>
         <result property="mobile" jdbcType="VARCHAR" column="umobile"/>
         <result property="sex" jdbcType="BIT" column="usex"/>
+        <result property="coin" column="ucoin" jdbcType="BIGINT"/>
+
         <collection property="roles" ofType="com.bilibackend.entity.Role">
             <id property="id" column="rid" jdbcType="BIGINT"/>
             <result property="deleteStatus" jdbcType="BIT" column="rdeleteStatus"/>
@@ -27,8 +28,8 @@
                u.username     as uusername,
                u.level        as ulevel,
                u.deleteStatus as udeleteStatus,
+               u.coin         as ucoin,
                u.nickname     as unickname,
-               u.password     as upassword,
                u.sex          as usex,
                u.mobile       as umobile,
                u.avatar       as uavatar,
@@ -42,6 +43,41 @@
         where u.id = #{queryId}
           and u.deleteStatus = 1
           and r.deleteStatus = 1
+    </select>
+
+    <!--    查询我关注的人-->
+    <select id="getMyFollow" resultMap="baseResultMap" parameterType="long">
+
+        select id           as uid,
+               username     as uusername,
+               deleteStatus as udeleteStatus,
+               nickname     as unickname,
+               sex          as usex,
+               mobile       as umobile,
+               avatar       as uavatar,
+               level        as ulevel
+        from bili_sys_user
+        where bili_sys_user.id in (select DISTINCT upId
+                                   from bili_follow
+                                   where bili_follow.userId = #{userId})
+          and bili_sys_user.deleteStatus = 1;
+    </select>
+
+    <select id="getFollowMe" resultMap="baseResultMap" parameterType="long">
+
+        select id           as uid,
+               username     as uusername,
+               deleteStatus as udeleteStatus,
+               nickname     as unickname,
+               sex          as usex,
+               mobile       as umobile,
+               avatar       as uavatar,
+               level        as ulevel
+        from bili_sys_user
+        where bili_sys_user.id in (select DISTINCT userId
+                                   from bili_follow
+                                   where bili_follow.upId = #{upId})
+          and bili_sys_user.deleteStatus = 1;
     </select>
 
 </mapper>

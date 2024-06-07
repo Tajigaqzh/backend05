@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bilibackend.mapper.DynamicMapper">
+
+    <resultMap id="BaseResultMap" type="com.bilibackend.entity.Dynamic">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+        <result property="publisherId" column="publisherId" jdbcType="BIGINT"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="videoId" column="videoId" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,createTime,publisherId,
+        content,videoId
+    </sql>
+
+
+    <select id="listPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from bili_dynamic
+        <if test="ew.customSqlSegment !=null and ew.customSqlSegment !=''">
+            ${ew.customSqlSegment}
+        </if>
+    </select>
+</mapper>

@@ -5,7 +5,6 @@ import cn.hutool.core.util.ObjectUtil;
 import com.bilibackend.entity.Role;
 import com.bilibackend.entity.User;
 import com.bilibackend.service.UserService;
-import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;

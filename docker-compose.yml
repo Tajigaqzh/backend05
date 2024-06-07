@@ -1,0 +1,55 @@
+
+version: "3.9"
+
+services:
+  elasticsearch:
+    image: elasticsearch:8.6.0
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms256m -Xmx1g
+      - ELASTIC_PASSWORD=elastic
+      - xpack.security.enabled=false
+#      - http.cors.enabled=true
+#      - http.cors.allow-origin='*'
+#    volumes:
+      - es_data:/usr/share/elasticsearch/data
+      - es_log:/usr/share/elasticsearch/logs
+      - es_plugins:/usr/share/elasticsearch/plugins
+    ports:
+      - target: 9200
+        published: 9200
+    networks:
+      - elastic
+
+  kibana:
+    image: kibana:8.6.0
+    ports:
+      - target: 5601
+        published: 5601
+    depends_on:
+      - elasticsearch
+    environment:
+      - elasticsearch.hosts='http://localhost:9200'
+#      - elasticsearch.username=elastic
+#      - elasticsearch.password=elastic
+      - xpack.monitoring.ui.container.elasticsearch.enabled=true
+      - i18n.locale="zh-cn"
+    networks:
+      - elastic
+#数据卷挂载
+volumes:
+  es_data:
+    #    driver: local
+    driver: /usr/local/elastic/data
+#    driver: C:/Users/20126/Desktop/backend/es/data
+  es_log:
+    driver: /usr/local/elastic/logs
+#    driver: C:/Users/20126/Desktop/backend/es/logs
+  es_plugins:
+    driver: /usr/local/elastic/plugins
+#    driver:  C:\Users\20126\Desktop\backend\es\plugins
+#公用的网络
+networks:
+  elastic:
+    name: elastic
+    driver: bridge

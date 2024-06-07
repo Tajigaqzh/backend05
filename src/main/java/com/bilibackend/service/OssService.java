@@ -1,6 +1,7 @@
 package com.bilibackend.service;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @Author 20126
@@ -63,9 +64,21 @@ public interface OssService {
 
     /**
      * 获取md5
+     *
      * @param url
      * @return
      */
     String getMd5(String url);
+
+
+    /**
+     * 普通文件上传
+     * 第一次上传的时候prev可以为空，如果需要替换，记得删除prev，传入上一次上传的文件路径即可
+     *
+     * @param file 要上传的文件
+     * @param prev 要删除的文件路径
+     * @return
+     */
+    String simpleUpload(MultipartFile file, String prev);
 
 }

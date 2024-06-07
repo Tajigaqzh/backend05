@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bilibackend.mapper.CollectionMapper">
+
+    <resultMap id="BaseResultMap" type="com.bilibackend.entity.Collection">
+            <result property="folderId" column="folderId" jdbcType="BIGINT"/>
+            <result property="videoId" column="videoId" jdbcType="BIGINT"/>
+        <result property="collectTime" column="collectTime" jdbcType="TIMESTAMP"/>
+
+    </resultMap>
+
+<!--    <sql id="Base_Column_List">-->
+<!--        folderId,videoId,collectTime-->
+<!--    </sql>-->
+</mapper>

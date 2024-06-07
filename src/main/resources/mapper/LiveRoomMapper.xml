@@ -24,4 +24,42 @@
         roomTitle,roomDesc,notice,
         createTime,endTime,playUrl,typeTitle,roomCover
     </sql>
+
+    <resultMap id="resultMap" type="com.bilibackend.vo.RoomDetail">
+        <id property="roomId" column="roomId" jdbcType="VARCHAR"/>
+        <result property="startId" column="startId" jdbcType="BIGINT"/>
+        <result property="deleteStatus" column="deleteStatus" jdbcType="BIT"/>
+        <result property="roomTitle" column="roomTitle" jdbcType="VARCHAR"/>
+        <result property="roomDesc" column="roomDesc" jdbcType="VARCHAR"/>
+        <result property="notice" column="notice" jdbcType="VARCHAR"/>
+        <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+        <result property="endTime" column="endTime" jdbcType="TIMESTAMP"/>
+        <result property="playUrl" column="playUrl" jdbcType="VARCHAR"/>
+        <result property="typeTitle" column="typeTitle" jdbcType="VARCHAR"/>
+        <result property="roomCover" column="roomCover" jdbcType="VARCHAR"/>
+        <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getRoomDetailByRoomId" resultMap="resultMap">
+
+        select r.roomId     as roomId,
+               r.startId    as startId,
+               r.deleteStatus as deleteStatus,
+               r.roomTitle  as roomTitle,
+               r.roomDesc   as roomDesc,
+               r.notice     as notice,
+               r.createTime as createTime,
+               r.endTime    as endTime,
+               r.playUrl    as playUrl,
+               r.typeTitle  as typeTitle,
+               r.roomCover  as roomCover,
+               u.username   as username,
+               u.avatar     as avatar
+        from bili_live_room r
+                 left join bili_sys_user u on r.startId = u.id
+        <if test="ew.customSqlSegment !=null and ew.customSqlSegment !=''">
+            ${ew.customSqlSegment}
+        </if>
+    </select>
 </mapper>
